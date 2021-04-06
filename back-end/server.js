@@ -47,6 +47,36 @@ app.get('/api/items', async (req, res) => {
     }
   });
 
+app.put('/api/items/:id', async (req,res) => {
+    try {
+        let temp = await Item.findOne({
+            _id: req.params.id
+        });
+        if (temp.hasListened == false) {
+            temp.hasListened = true;
+        } else {
+            temp.hasListened = false;
+        }
+        temp.save();
+        res.sendStatus(200);
+    } catch(error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+});
+
+app.delete('/api/items/:id', async (req, res) => {
+    try {
+        await Item.deleteOne({
+            _id: req.params.id
+        });
+        res.sendStatus(200);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+});
+
   app.listen(3000, () => console.log('Server listening on port 3000!'));
 
   
