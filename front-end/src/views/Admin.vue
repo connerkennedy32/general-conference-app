@@ -1,103 +1,34 @@
 <template>
 <div>
-<form @submit="upload">
-    <input type="text" v-model="path">
-    <button type="submit">Submit</button>
-</form>
-<p></p>
-<button @click="toggleList">Show List</button>
-<p></p>
-<p>{{unusedItems.length}}</p>
-<div v-if="listOn">
-    <div v-for="item in items" :key="item.id">
-        <p>{{item.path}} - {{item.hasListened}} <button @click="deleteItem(item)">X</button> <button @click="hasClicked(item)">T/F</button></p> 
-    </div>
-</div>
-<button class="btn btn-primary" @click="newTalk">Generate Talk</button>
+    <LoggedIn v-if="user" />
+    <Login v-else /> 
 </div>
 </template>
 
 <script>
+// import axios from 'axios';
 import axios from 'axios';
+import LoggedIn from '@/components/LoggedIn.vue';
+import Login from '@/components/Login.vue';
 
 export default {
   name: 'Admin',
-  data() {
-    return {
-      test: "",
-      path: "",
-      items: [],
-      unusedItems: [],
-      listOn: null,
-      }
+  components: {
+      LoggedIn,
+      Login,
   },
-  created() {
-    this.getItems();
+  async created() {
+    try {
+      let response = await axios.get('/api/users');
+      this.$root.$data.user = response.data.user;
+    } catch (error) {
+      this.$root.$data.user = null;
+    }
   },
-
-  methods: {
-    toggleList() {
-        if (this.listOn) {
-            this.listOn = false;
-        } else {
-            this.listOn = true;
-        }
-    },
-    filterItems() {
-        this.unusedItems = this.items.filter(item => item.hasListened == false);
-    },  
-    async upload() {  
-        try {
-            await axios.post('/api/items', {
-            path: this.path,
-            hasListened: false
-            })
-          } catch(error) {
-            console.log(error);
-          }
-    },
-    async getItems() {
-        try {
-            let response = await axios.get("/api/items");
-            this.items = response.data;
-            this.filterItems();
-            return true;
-
-        } catch (error) {
-            console.log(error);
-        }
-    },
-    async deleteItem(item) {
-        try {
-            await axios.delete("/api/items/" + item._id);
-            this.getItems();
-            return true;
-        } catch(error) {
-            console.log(error);
-        }
-    },
-    async hasClicked(item) {
-        try {
-            if (!item.hasListened) {
-                await axios.put("/api/items/" + item._id, {
-                hasListened: true,
-            })
-            } else {
-                await axios.put("/api/items/" + item._id, {
-                hasListened: false,
-            })
-            }
-            this.getItems();
-            
-        } catch(error) {
-            console.log(error);
-        }
-    },
-    newTalk() {
-        let randNum = Math.floor(Math.random() * this.unusedItems.length);
-        let talkInfo = this.unusedItems[randNum];
-        window.open(talkInfo.path); //opens new tab with the correct url
-        this.hasClicked(talkInfo);
+  computed: {
+    user() {
+      return this.$root.$data.user;
+    // return true;
     }
   }
 }

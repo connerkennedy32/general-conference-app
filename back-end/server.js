@@ -10,9 +10,23 @@ app.use(bodyParser.urlencoded({
 const mongoose = require('mongoose');
 
 // connect to the database
-mongoose.connect('mongodb://localhost:27017/gctalks', {
+mongoose.connect('mongodb://localhost:27017/gctalkstest', {
   useNewUrlParser: true
 });
+
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
+const cookieSession = require('cookie-session');
+app.use(cookieSession({
+  name: 'session',
+  keys: [
+    'secretValue'
+  ],
+  cookie: {
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }
+}));
 
 // Create a scheme for talks: a path and a bool to see if I have listened to it yet.
 const itemSchema = new mongoose.Schema({
@@ -76,6 +90,11 @@ app.delete('/api/items/:id', async (req, res) => {
         res.sendStatus(500);
     }
 });
+
+
+// import the users module and setup its API path
+const users = require("./users.js");
+app.use("/api/users", users.routes);
 
   app.listen(3001, () => console.log('Server listening on port 3001!'));
 
