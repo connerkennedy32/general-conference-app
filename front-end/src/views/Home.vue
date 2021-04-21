@@ -1,10 +1,12 @@
 <template>
 <div>
+<p v-if="user" id="welcome">Welcome, {{this.$root.$data.user.firstName}}  </p>
 <p></p>
-<button class="btn btn-primary" @click="newTalk">Generate Talk</button>
+<button v-if="user" class="btn btn-primary" @click="newTalk">Generate Talk</button>
 <p></p>
-<h1 class="display-1">{{unusedItems.length}}</h1>
-<p>Talks left...</p>
+<h1 v-if="user" class="display-1">{{unusedItems.length}}</h1>
+<p v-if="user">Talks left...</p>
+<p v-else>No user is logged in</p>
 
 </div>
 </template>
@@ -24,7 +26,16 @@ export default {
       }
   },
   created() {
-    this.getItems();
+      if (this.$root.$data.user) {
+        this.getItems();
+      }
+  },
+
+  computed: {
+    user() {
+      return this.$root.$data.user;
+    // return true;
+    }
   },
 
   methods: {
@@ -94,3 +105,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#welcome {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    margin: 30px;
+}
+</style>

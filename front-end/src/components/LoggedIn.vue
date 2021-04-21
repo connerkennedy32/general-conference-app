@@ -1,13 +1,13 @@
 <template>
 <div>
-<p>Welcome, {{this.$root.$data.user.firstName}}</p>
-<button @click="logout">Logout</button>
+<p id="welcome">Welcome, {{this.$root.$data.user.firstName}}  </p>
+<button id="logout" class="btn btn-danger" @click="logout">Logout</button>
 <form @submit="upload">
-    <input type="text" v-model="path">
-    <button type="submit">Submit</button>
+    <input type="text" v-model="path" placeholder="Input URL here">
+    <button class="btn btn-primary p-1 ml-2" type="submit">Submit</button>
 </form>
 <p></p>
-<button @click="toggleList">Show List</button>
+<button class="btn btn-primary" @click="toggleList">Show List</button>
 <p></p>
 <p>{{unusedItems.length}}</p>
 <div v-if="listOn">
@@ -113,3 +113,18 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+#logout {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    margin: 30px;
+}
+#welcome {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    margin: 30px;
+}
+</style>

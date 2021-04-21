@@ -18,12 +18,15 @@ export default {
       Login,
   },
   async created() {
-    try {
-      let response = await axios.get('/api/users');
-      this.$root.$data.user = response.data.user;
-    } catch (error) {
-      this.$root.$data.user = null;
+    if (this.$root.$data.user) {
+      try {
+        let response = await axios.get('/api/users');
+        this.$root.$data.user = response.data.user;
+      } catch (error) {
+        this.$root.$data.user = null;
+      }
     }
+    
   },
   computed: {
     user() {

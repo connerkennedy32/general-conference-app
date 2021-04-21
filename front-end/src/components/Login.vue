@@ -12,7 +12,7 @@
         <input type="password" placeholder="password" v-model="password">
       </fieldset>
       <fieldset>
-        <button type="submit" class="pure-button pure-button-primary" @click.prevent="register">Register</button>
+        <button type="submit" class="btn btn-primary pure-button pure-button-primary" @click.prevent="register">Register</button>
       </fieldset>
     </form>
     <p v-if="error" class="error">{{error}}</p>
@@ -23,7 +23,7 @@
         <input type="password" placeholder="password" v-model="passwordLogin">
       </fieldset>
       <fieldset>
-        <button type="submit" class="pure-button pure-button-primary" @click.prevent="login">Login</button>
+        <button type="submit" class="btn btn-primary pure-button pure-button-primary" @click.prevent="login">Login</button>
       </fieldset>
     </form>
     <p v-if="errorLogin" class="error">{{errorLogin}}</p>
@@ -88,8 +88,11 @@ export default {
 </script>
 
 <style scoped>
-.space-above {
+/* .space-above {
   margin-top: 50px;
+} */
+.btn {
+  margin-bottom: 20px;
 }
 
 h1 {
@@ -98,7 +101,7 @@ h1 {
 }
 
 .hero {
-  padding: 120px;
+  padding: 20px;
   display: flex;
   justify-content: center;
 }
@@ -116,6 +119,8 @@ h1 {
 }
 
 input {
+  margin-top: 10px;
+  margin-bottom: 10px;
   margin-right: 10px;
 }
 
