@@ -2,7 +2,7 @@
 <div>
 <p id="welcome">Welcome, {{this.$root.$data.user.firstName}}  </p>
 <button id="logout" class="btn btn-danger" @click="logout">Logout</button>
-<form @submit="upload">
+<form @submit.prevent="upload">
     <input type="text" v-model="path" placeholder="Input URL here">
     <button class="btn btn-primary p-1 ml-2" type="submit">Submit</button>
 </form>
@@ -61,8 +61,10 @@ export default {
         try {
             await axios.post('/api/items', {
             path: this.path,
-            hasListened: false
+            hasListened: false            
             })
+            this.getItems();
+            this.path = "";
           } catch(error) {
             console.log(error);
           }

@@ -69,7 +69,7 @@ const User = mongoose.model('User', userSchema);
 // middleware function to check for logged-in users
 const validUser = async (req, res, next) => {
   if (!req.session.userID)
-    return res.status(403).send({
+    return res.status(200).send({
       message: "not logged in"
     });
   try {
@@ -77,7 +77,7 @@ const validUser = async (req, res, next) => {
       _id: req.session.userID
     });
     if (!user) {
-      return res.status(403).send({
+      return res.status(200).send({
         message: "not logged in"
       });
     }
